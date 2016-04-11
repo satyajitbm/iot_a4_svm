@@ -10,7 +10,6 @@ import sys
 import csv
 from collections import defaultdict
 
-#input_file = sys.argv[1]
 output_file = 'test.data'
 present_str = "present"
 
@@ -32,13 +31,7 @@ def construct_line( label, line ):
 # ---
 
 
-def csv2libsvm(input_file, label_pos, skip_head):
-        try:
-                label_index = int( label_pos )
-        except IndexError:
-                label_index = 0
-
-        skip_headers = int(skip_head)
+def csv2libsvm(input_file, label_index, skip_headers):
 
         i = open( input_file, 'rb' )
         o = open( output_file, 'wb' )
@@ -55,7 +48,6 @@ def csv2libsvm(input_file, label_pos, skip_head):
                         label_str = line.pop( label_index )
                         #print label_str
                         if(label_str == present_str):
-                                #print label_str
                                 label = '1'
                         else:
                                 label = '0'

@@ -1,10 +1,11 @@
 from svmutil import *
 from csv2libsvm import *
+import csv
 
-#train_data_file = './datatest2_3.data'
-#test_data_file = './random.data'
-train_data_file = csv2libsvm('datatest1.csv', '5', '1')
-test_data_file = csv2libsvm('datatest2.csv', '5', '1')
+train_data_file = csv2libsvm('datatest1.csv', 5, True)
+test_data_file = csv2libsvm('datatest2.csv', 5, True)
+present_str = "present"
+absent_str = "absent"
 
 # labels, items = svm_read_problem(<input file in libsvm format>)
 x, y = svm_read_problem(train_data_file)
@@ -31,6 +32,15 @@ m = svm_train(prob, param)
 print param.kernel_type
 print param.C
 
-# computed labels will be in p_labs as 1 or 0. Convert it to "present"/"absent"
+# computed labels will be in p_labs as 1.0 or 0.0
 p_labs, p_acc, p_vals = svm_predict(a,b,m)
 #print p_labs
+
+# Create result file and write predicted results to it
+with open("result.csv", "wb") as csv_file:
+    writer = csv.writer(csv_file, lineterminator='\n')
+    for item in p_labs:
+        if item == 1.0:
+            writer.writerow([present_str])
+        else:
+            writer.writerow([absent_str])
