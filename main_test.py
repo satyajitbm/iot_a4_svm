@@ -1,7 +1,10 @@
 from svmutil import *
+from csv2libsvm import *
 
-train_data_file = './datatest2_3.data'
-test_data_file = './random.data'
+#train_data_file = './datatest2_3.data'
+#test_data_file = './random.data'
+train_data_file = csv2libsvm('datatest1.csv', '5', '1')
+test_data_file = csv2libsvm('datatest2.csv', '5', '1')
 
 # labels, items = svm_read_problem(<input file in libsvm format>)
 x, y = svm_read_problem(train_data_file)

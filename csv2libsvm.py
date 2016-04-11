@@ -10,6 +10,10 @@ import sys
 import csv
 from collections import defaultdict
 
+#input_file = sys.argv[1]
+output_file = 'test.data'
+present_str = "present"
+
 def construct_line( label, line ):
 	new_line = []
 	if float( label ) == 0.0:
@@ -27,39 +31,34 @@ def construct_line( label, line ):
 
 # ---
 
-input_file = sys.argv[1]
-output_file = sys.argv[2]
-present_str = "present"
 
-try:
-	label_index = int( sys.argv[3] )
-except IndexError:
-	label_index = 0
+def csv2libsvm(input_file, label_pos, skip_head):
+        try:
+                label_index = int( label_pos )
+        except IndexError:
+                label_index = 0
 
-try:
-	skip_headers = sys.argv[4]
-except IndexError:
-	skip_headers = 0
+        skip_headers = int(skip_head)
 
-i = open( input_file, 'rb' )
-o = open( output_file, 'wb' )
+        i = open( input_file, 'rb' )
+        o = open( output_file, 'wb' )
 
-reader = csv.reader( i )
+        reader = csv.reader( i )
 
-if skip_headers:
-	headers = reader.next()
+        if skip_headers:
+                headers = reader.next()
 
-for line in reader:
-	if label_index == -1:
-		label = '1'
-	else:
-		label_str = line.pop( label_index )
-		print label_str
-		if(label_str == present_str):
-			print label_str
-			label = '1'
-		else:
-			label = '0'
-		# label = '0'
-	new_line = construct_line( label, line )
-	o.write( new_line )
+        for line in reader:
+                if label_index == -1:
+                        label = '1'
+                else:
+                        label_str = line.pop( label_index )
+                        #print label_str
+                        if(label_str == present_str):
+                                #print label_str
+                                label = '1'
+                        else:
+                                label = '0'
+                new_line = construct_line( label, line )
+                o.write( new_line )
+        return output_file
