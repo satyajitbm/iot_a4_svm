@@ -30,6 +30,22 @@ def construct_line( label, line ):
 
 # ---
 
+def csv2libsvmtest(input_file, skip_headers):
+
+        i = open( input_file, 'rb' )
+        o = open( output_file, 'wb' )
+
+        reader = csv.reader( i )
+
+        if skip_headers:
+                headers = reader.next()
+
+        for line in reader:
+                new_line = construct_line( '0', line )
+                o.write( new_line )
+        return output_file
+
+
 
 def csv2libsvm(input_file, label_index, skip_headers):
 
